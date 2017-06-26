@@ -6,6 +6,7 @@ public class ControladorGlobal : MonoBehaviour {
     public float tiempo_para_empate = .3f;
     private int _numero_muertos = 0;
     private JugadoresKey _ultimo_muerto = JugadoresKey.Ninguno;
+
     public void jugadorMurio(JugadoresKey jugadorKey) {
         this._numero_muertos ++;
         this._ultimo_muerto = jugadorKey;
