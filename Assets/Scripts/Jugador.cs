@@ -29,10 +29,6 @@ public class Jugador : MonoBehaviour {
     protected Transform _transform;
     protected Animator _animator;
 
-    // Eventos
-    public delegate void onBombaAction();
-	public static event onBombaAction cuandoPlantanBombas;
-
    public virtual void Start() {
         this._rigibody = GetComponent<Rigidbody>();
         this._transform = this.transform;
@@ -49,10 +45,6 @@ public class Jugador : MonoBehaviour {
             ),
             this.bomba_prefab.transform.rotation
         );
-
-        if (cuandoPlantanBombas != null) {
-            cuandoPlantanBombas();
-        }
     }
 
     protected void OnTriggerEnter(Collider otro) {

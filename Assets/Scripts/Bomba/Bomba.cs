@@ -13,10 +13,18 @@ public class Bomba : MonoBehaviour {
 
     private bool _ha_explotado = false;
 
+    // Eventos
+    public delegate void onBombaAction();
+	public static event onBombaAction cuandoSePlanta;    
+
     void Start() {
         Invoke("Explota", this.tiempo_para_destruccion);
-    }
 
+        if (cuandoSePlanta != null) {
+            cuandoSePlanta();
+        }
+    }
+    
     void OnTriggerEnter(Collider colisionador) {
         if (colisionador.CompareTag("Explosion") && this._ha_explotado == false) {
             CancelInvoke("Explota");
