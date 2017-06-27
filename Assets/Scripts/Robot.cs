@@ -22,6 +22,7 @@ public class Robot : Jugador {
 	}
 
 	void Escapar() {
+		
 	}
 	
 	private void reaccionarABombas() {
