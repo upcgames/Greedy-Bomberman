@@ -4,11 +4,12 @@ using System.Collections;
 public class Bomba : MonoBehaviour {
     public GameObject explosion_prefab;
     public LayerMask solidos_capa;
+    public AudioClip sonido_explosion; 
+    AudioSource audio_source;
 
     public float tiempo_para_destruccion = 3f;
     public float tiempo_desaparece = .3f;
     public float velocidad_propragacion = .05f;
-
     public int longitud_propagacion = 2;
 
     private bool _ha_explotado = false;
@@ -18,6 +19,7 @@ public class Bomba : MonoBehaviour {
 	public static event onBombaAction cuandoSePlanta;    
 
     void Start() {
+        audio_source = GetComponent<AudioSource>();
         Invoke("Explota", this.tiempo_para_destruccion);
 
         if (cuandoSePlanta != null) {
@@ -33,6 +35,7 @@ public class Bomba : MonoBehaviour {
     }
 
     void Explota() {
+        audio_source.PlayOneShot(sonido_explosion);
         Instantiate(this.explosion_prefab, this.transform.position, Quaternion.identity);
 
         StartCoroutine(crearExplosion(Vector3.forward));
