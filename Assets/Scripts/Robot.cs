@@ -22,9 +22,11 @@ public class Robot : Jugador {
 	}
 
 	void Escapar() {
-		
+		Debug.Log("Tengo que escapar!");
 	}
-	
+
+	// Funcion qu se llama cada vez aue se planta una bomba,
+	// Nos sirve para saber si el bot esta en peligro
 	private void reaccionarABombas() {
 		GameObject[] bombas = GameObject.FindGameObjectsWithTag("Bomb");
 		Bomba bomba = bombas[bombas.Length - 1].GetComponent<Bomba>();
@@ -36,7 +38,7 @@ public class Robot : Jugador {
 			this._collider.Raycast(new Ray(bomba.transform.position, Vector3.back), out golpe, bomba.longitud_propagacion) ||
 			this._collider.Raycast(new Ray(bomba.transform.position, Vector3.left), out golpe, bomba.longitud_propagacion)
 			)
-		{
+		{ // Si estamos al alcance de una explision
 			this.Escapar();
 		}
 	}
