@@ -9,7 +9,7 @@ public enum RobotEstado {
 	Atacando
 }
 
-public class Robot : Jugador {
+public class Bot : Jugador {
 	
 	private Collider _collider;
 
