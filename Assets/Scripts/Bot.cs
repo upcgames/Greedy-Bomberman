@@ -16,9 +16,6 @@ public class Bot : Jugador {
 
 	public Vector3 siguiente_posicion;
 
-	public int nuevox;
-	public int nuevoz;
-
 	public override void Start() {
 		 base.Start();
 		 Bomba.cuandoSePlanta += this.reaccionarABombas;
