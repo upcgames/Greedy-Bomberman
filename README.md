@@ -5,6 +5,11 @@ Juego creado para el curso de Complejidad Algoritmica
   <img src="https://user-images.githubusercontent.com/9372893/27993764-b03a75dc-6475-11e7-8486-3b91784cdacf.gif">
 </div>
 
+| Windows | Mac | Linux |
+|:-------------:|:---------:|:-------------------:|
+|  **v1.0.0** | *No Disponible* | *No Disponible* |
+| [Descargar](https://github.com/upcgames/Greedy-Bomberman/releases/download/v1.0.0/Greedy.Bomberman.7z) | - | - |
+
 ## Plot
 Deberás acabar con el resto de tus enemigos, antes de que ellos lo hagan contigo.
 
