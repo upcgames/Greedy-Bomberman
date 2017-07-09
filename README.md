@@ -1,9 +1,12 @@
 # Greedy Bomberman #
+
 Juego creado para el curso de Complejidad Algoritmica
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/9372893/27993764-b03a75dc-6475-11e7-8486-3b91784cdacf.gif">
 </div>
+
+---
 
 | Windows | Mac | Linux |
 |:-------------:|:---------:|:-------------------:|
