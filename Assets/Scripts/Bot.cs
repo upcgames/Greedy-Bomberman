@@ -10,10 +10,14 @@ public enum RobotEstado {
 }
 
 public class Bot : Jugador {
-	
+	public RobotEstado estado;
+
 	private Collider _collider;
 
-	public RobotEstado estado;
+	public Vector3 siguiente_posicion;
+
+	public int nuevox;
+	public int nuevoz;
 
 	public override void Start() {
 		 base.Start();
@@ -21,11 +25,33 @@ public class Bot : Jugador {
 		 this._collider = this.GetComponent<Collider>(); 
 	}
 
+	public void Update() {
+		if (this.estado == RobotEstado.Escapando || this.estado == RobotEstado.Atacando) {
+			float step = this.velocidad * Time.deltaTime;
+			this.transform.LookAt(this.siguiente_posicion);
+        	this.transform.position = Vector3.MoveTowards(transform.position, this.siguiente_posicion, step);
+		}
+	}
+
+	public void mover(Vector3 nueva_posicion) {
+		if (this.estado == RobotEstado.Observando) {
+			this.estado = RobotEstado.Escapando;
+		}
+		this.siguiente_posicion = nueva_posicion;
+		this._animator.SetBool("Walking",true);
+	}
+
 	void Escapar() {
 		Debug.Log("Tengo que escapar!");
 	
-		Vector3 posicion_segura = Posiciones.BuscarPosicionSeguro(this.transform.position);
-		this.transform.position = posicion_segura;
+		Vector3 posicion_segura = Posiciones.BuscarPosicionSegura(this.transform.position);
+		if (posicion_segura == Vector3.zero) {
+			Debug.Log("NO se encontro posision segura");
+		}
+		else {
+			this.mover(posicion_segura);
+			this.estado = RobotEstado.Escapando;
+		}
 	}
 
 	// Funcion que se llama cada vez aue se planta una bomba,

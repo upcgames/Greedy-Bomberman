@@ -4,68 +4,78 @@ using UnityEngine;
 
 public class Posiciones : MonoBehaviour {
 
-	public static Vector3 BuscarPosicionSeguro(Vector3 commienzo_mundo) {
+	public static Vector3 BuscarPosicionSegura(Vector3 comienzo_mundo, bool[,] posiciones_muerte = null) {
 
-		Vector3 commienzo = new Vector3();
-		commienzo.x = Mathf.FloorToInt(commienzo_mundo.x);
-		commienzo.y = commienzo_mundo.y;
-		commienzo.z = Mathf.FloorToInt(commienzo_mundo.z);
+		Vector3 comienzo = new Vector3();
+		comienzo.x = Mathf.FloorToInt(comienzo_mundo.x);
+		comienzo.y = comienzo_mundo.y;
+		comienzo.z = Mathf.FloorToInt(comienzo_mundo.z);
 
-		// Arreglo para saber si una posicion ya fue explorada o no
-		bool[,] explorados = new bool[13, 11]; 
+		// Arreglo para saber que posiciones seran afectadas por
+		if (posiciones_muerte == null) {
+			posiciones_muerte = new bool[13, 11];
+		}
 
-		// Cola de posiciones por explorar
-		Queue<Vector3> por_explorar = new Queue<Vector3>();
+		posiciones_muerte[(int)comienzo.x, (int)comienzo.z] = true;
 
-		por_explorar.Enqueue(commienzo);
+		Vector3 activo = comienzo;
 
-		while (por_explorar.Count != 0) {
-			
-			// Exploramos al primero de la cola
-			Vector3 activo = por_explorar.Dequeue();
+		// Consultamos la seguridad de las 4 posiciones adyacentes
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				
+				// No exploramos las diagonales
+				if (Mathf.Abs(i) == Mathf.Abs(j)) continue;
+				
+				Vector3 siguiente_posicion = new Vector3(activo.x + i, activo.y,  activo.z + j);
+				
+				Collider[] objetos = Physics.OverlapSphere(siguiente_posicion, .25f);
 
-			// Consultamos la seguridad de las 4 posiciones adyacentes
-			for (int i = -1; i <= 1; i++) {
-				for (int j = -1; j <= 1; j++) {
-					
-					// No exploramos las diagonales
-					if (Mathf.Abs(i) == Mathf.Abs(j)) continue;
-					
-					Vector3 siguiente_posicion = new Vector3(activo.x + i, activo.y,  activo.z + j);
-					
-					Collider[] objetos = Physics.OverlapSphere(siguiente_posicion, .25f);
+				bool choca_con_objeto = false;
+	
+				// Si la posicion contiene una pared, una bomba o una explosión
+				foreach (Collider objeto in objetos) {
 
-					bool choca_con_objeto = false;
-		
-					// Si la posicion contiene una pared, una bomba o una explosión
-					foreach (Collider objeto in objetos) {
-
-						if (objeto.CompareTag("Block") || objeto.CompareTag("Explosion") || objeto.CompareTag("BombCollider")) {
-							choca_con_objeto = true;
-							break;
-						}
+					if (objeto.CompareTag("Block") || objeto.CompareTag("Explosion") || objeto.CompareTag("BombCollider")) {
+						choca_con_objeto = true;
+						break;
 					}
+				}
+				if (choca_con_objeto) continue;
 
-					if (choca_con_objeto == false) { // Llega a una posicion segura
-						Debug.Log("Econtro posicion segura");
-						return siguiente_posicion;
-					}
-					else {
+				// No choca con nigun objeto
+				// Llega a una posicion libre, pero todavia no se sabe si es segura
+				// Hay que validar si la posicion eventualmente será alcanzada por una bomba
+
+				// Esta posicion ya fue detectada como posición que sera afecta por las explosiones
+				if (posiciones_muerte[(int)siguiente_posicion.x, (int)siguiente_posicion.z]) continue;
+
+				GameObject[] bombas = GameObject.FindGameObjectsWithTag("Bomb");
+				Bomba bomba = bombas[bombas.Length - 1].GetComponent<Bomba>();
+
+				if (
+					(bomba.transform.position.z == siguiente_posicion.z && bomba.transform.position.x + bomba.longitud_propagacion >= siguiente_posicion.x) ||
+					(bomba.transform.position.z == siguiente_posicion.z && bomba.transform.position.x + bomba.longitud_propagacion <= siguiente_posicion.x) ||
+					(bomba.transform.position.x == siguiente_posicion.x && bomba.transform.position.z + bomba.longitud_propagacion >= siguiente_posicion.z) ||
+					(bomba.transform.position.x == siguiente_posicion.x && bomba.transform.position.z + bomba.longitud_propagacion <= siguiente_posicion.z)
+				)
+				{ // Estoy al alcanze de una explosion, no puedo quedarme aca
+					Vector3 posicion_backtrack = BuscarPosicionSegura(siguiente_posicion, posiciones_muerte);
+
+					if (posicion_backtrack == Vector3.zero) {
 						continue;
 					}
-					
-					// if (explorados[(int)siguiente_posicion.x, (int)siguiente_posicion.z] == true) continue;
-
-					// Si mi posicion en la matriz explorados es true, ya ha sido explorada
-					// explorados[(int)siguiente_posicion.x, (int)siguiente_posicion.z] = true;
-					// por_explorar.Enqueue(siguiente_posicion);
-				}	
+					else {
+						return posicion_backtrack;
+					}
+				}
+				Debug.Log("Econtré posicion segura");
+				return siguiente_posicion;
 			}
 		}
 
-
-		// Si no encuentra lugar seguro...
-		Debug.Log("No hay lugar seguro");
-		return (commienzo_mundo);
+		// Si no encuentra lugar seguro en esta iteracion
+		// Vector3.zero actuara como nuestro null
+		return Vector3.zero;
 	}
 }
