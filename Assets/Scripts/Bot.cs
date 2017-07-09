@@ -23,9 +23,12 @@ public class Bot : Jugador {
 
 	void Escapar() {
 		Debug.Log("Tengo que escapar!");
+	
+		Vector3 posicion_segura = Posiciones.BuscarPosicionSeguro(this.transform.position);
+		this.transform.position = posicion_segura;
 	}
 
-	// Funcion qu se llama cada vez aue se planta una bomba,
+	// Funcion que se llama cada vez aue se planta una bomba,
 	// Nos sirve para saber si el bot esta en peligro
 	private void reaccionarABombas() {
 		GameObject[] bombas = GameObject.FindGameObjectsWithTag("Bomb");
@@ -41,5 +44,11 @@ public class Bot : Jugador {
 		{ // Si estamos al alcance de una explision
 			this.Escapar();
 		}
+	}
+
+	// Cuando se muera este bot debemos tambien,
+	// desuscribir sus eventos
+	private void OnDestroy() {
+		Bomba.cuandoSePlanta -= this.reaccionarABombas;
 	}
 }
