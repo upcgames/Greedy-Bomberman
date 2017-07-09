@@ -42,6 +42,7 @@ Deberás acabar con el resto de tus enemigos, antes de que ellos lo hagan contig
 
 ## Creadores
 
+- Hugo Rosado
 - Francis Marquez
 - Diego Jara
 
