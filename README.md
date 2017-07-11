@@ -26,12 +26,13 @@ Deberás acabar con el resto de tus enemigos, antes de que ellos lo hagan contig
 
 ## Capacidad de los bots
 - Detectar si alguna explosión le va a afectar.
-- Determina la posicion más cercana a salvo de las explosiones - *BFS Customizado*
+- Determina la posicion más cercana a salvo de las explosiones - *BFS Customizado* [*(Ver codigo)*](https://github.com/upcgames/Greedy-Bomberman/blob/master/Assets/Scripts/Algoritmos/Posiciones.cs)
 
 ## Por hacer
 - Los bots deberán poner bombas en lugares estrategicos
 - Implementar los muros
 - Añadir powerups
+- Implementar pathfinding para los bots
 - **Sugiere más!**
 
 ## Fact Destacables
