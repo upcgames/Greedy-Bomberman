@@ -1,6 +1,6 @@
 # Greedy Bomberman #
 
-Juego creado para el curso de Complejidad Algoritmica
+Juego creado con el objetivo de implementar una inteligencia artificial para Bomberman.
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/9372893/27993764-b03a75dc-6475-11e7-8486-3b91784cdacf.gif">
@@ -49,7 +49,7 @@ Deberás acabar con el resto de tus enemigos, antes de que ellos lo hagan contig
 
 ## Agradecimientos
 
-- Marco Bruggmann *(Profesor)*
+- Marco Bruggmann
 
 
 ## SOBRE UPC LAB Y UPC GAMES
